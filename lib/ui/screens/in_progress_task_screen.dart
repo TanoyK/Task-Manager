@@ -55,7 +55,7 @@ class _InProgressTaskScreenState extends State<InProgressTaskScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const UserProfileBanner(
+            const UserProfileAppBar(
               isUpdateScreen: true,
             ),
             Expanded(

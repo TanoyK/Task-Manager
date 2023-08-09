@@ -59,7 +59,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const UserProfileBanner(
+            const UserProfileAppBar(
               isUpdateScreen: true,
             ),
             Padding(

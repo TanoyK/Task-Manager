@@ -111,7 +111,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       body: ScreenBackground(
         child: Column(
           children: [
-            const UserProfileBanner(
+            const UserProfileAppBar(
               isUpdateScreen: true,
             ),
             _getCountSummaryInProgress ?
