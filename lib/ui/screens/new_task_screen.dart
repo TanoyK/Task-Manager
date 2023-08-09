@@ -112,7 +112,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
         child: Column(
           children: [
             const UserProfileAppBar(
-              isUpdateScreen: true,
+              isUpdateScreen: false,
             ),
             _getCountSummaryInProgress ?
             const LinearProgressIndicator()

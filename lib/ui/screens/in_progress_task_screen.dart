@@ -56,7 +56,7 @@ class _InProgressTaskScreenState extends State<InProgressTaskScreen> {
         child: Column(
           children: [
             const UserProfileAppBar(
-              isUpdateScreen: true,
+              isUpdateScreen: false,
             ),
             Expanded(
               child: _getProgressTaskInProgress ? const Center(

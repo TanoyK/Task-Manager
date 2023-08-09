@@ -5,9 +5,10 @@ import 'package:task_manager_11/ui/screens/auth/login_screen.dart';
 import 'package:task_manager_11/ui/screens/update_profile_screen.dart';
 
 class UserProfileAppBar extends StatefulWidget {
-  final bool isUpdateScreen;
+  final bool? isUpdateScreen;
   const UserProfileAppBar({
-    super.key, required this.isUpdateScreen,
+    super.key,
+    this.isUpdateScreen,
   });
 
   @override
@@ -22,9 +23,11 @@ class _UserProfileAppBarState extends State<UserProfileAppBar> {
       title: GestureDetector(
         onTap: (){
           if((widget.isUpdateScreen ?? false) == false) {
-            Navigator.push(context, MaterialPageRoute(
-                builder: (context) => const UpdateProfileScreen()
-            ));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UpdateProfileScreen()
+                ));
           }
         },
         child: Row(

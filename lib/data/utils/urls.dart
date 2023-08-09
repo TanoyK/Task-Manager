@@ -11,4 +11,6 @@ class Urls {
   static String inProgressTask = '$_baseUrl/listTaskByStatus/Progress';
   static String deleteTask(String id) => '$_baseUrl/deleteTask/$id';
   static String updateTask(String id, String status) => '$_baseUrl/updateTaskStatus/$id/$status';
+  static String updateProfile = '$_baseUrl/profileUpdate';
+
 }

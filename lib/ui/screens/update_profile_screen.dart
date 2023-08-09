@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:task_manager_11/data/models/auth_utility.dart';
+import 'package:task_manager_11/data/models/network_response.dart';
+import 'package:task_manager_11/data/services/network_caller.dart';
+import 'package:task_manager_11/data/utils/urls.dart';
 import 'package:task_manager_11/ui/widgets/screen_background.dart';
 import 'package:task_manager_11/ui/widgets/user_profile_banner.dart';
 
@@ -23,6 +26,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   XFile? imageFile;
   ImagePicker picker = ImagePicker();
+  bool _profileInProgress = false;
 
   @override
   void initState() {
@@ -31,6 +35,38 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     _firstNameTEController.text = userData?.firstName ?? "";
     _lastNameTEController.text = userData?.lastName ?? "";
     _mobileTEController.text = userData?.mobile ?? "";
+  }
+
+  Future<void> updateProfile() async{
+    _profileInProgress = true;
+    if(mounted){
+      setState(() { });
+    }
+    final Map<String, dynamic> requestBody = {
+      "firstName": _firstNameTEController.text.trim(),
+      "lastName": _lastNameTEController.text.trim(),
+      "mobile": _mobileTEController.text.trim(),
+      "password": _passwordTEController.text,
+      "photo":""
+    };
+    if(_passwordTEController.text.isNotEmpty){
+      requestBody['password'] = _passwordTEController.text;
+    }
+    final NetworkResponse response = await NetworkCaller().postRequest(Urls.updateProfile, requestBody );
+    _profileInProgress = false;
+    if(mounted){
+      setState(() { });
+    }
+    if(response.isSuccess){
+      _passwordTEController.clear();
+      if(mounted){
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile update')));
+      }
+    }else{
+      if(mounted){
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile update failed try again')));
+      }
+    }
   }
 
   @override
@@ -90,7 +126,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       const SizedBox(height: 16),
                       TextFormField(
                         controller: _emailTEController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.emailAddress,
+                        readOnly: true,
                         decoration: const InputDecoration(
                           hintText: 'Email',
                         ),
@@ -161,9 +198,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       const SizedBox(height: 12,),
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: const Text('Update'),
+                        child: _profileInProgress ? const Center(
+                          child: CircularProgressIndicator(),)
+                            :ElevatedButton(
+                               onPressed: () {
+                                 updateProfile();
+                               },
+                               child: const Text('Update'),
                         ),
                       )
                     ],
