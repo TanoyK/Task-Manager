@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:task_manager_11/data/models/auth_utility.dart';
+import 'package:task_manager_11/data/models/login_model.dart';
 import 'package:task_manager_11/data/models/network_response.dart';
 import 'package:task_manager_11/data/services/network_caller.dart';
 import 'package:task_manager_11/data/utils/urls.dart';
@@ -15,7 +16,7 @@ class UpdateProfileScreen extends StatefulWidget {
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
-  final userData = AuthUtility.userInfo.data;
+  UserData userData = AuthUtility.userInfo.data!;
   final TextEditingController _emailTEController = TextEditingController(text: AuthUtility.userInfo.data!.email ?? '');
   final TextEditingController _firstNameTEController = TextEditingController();
   final TextEditingController _lastNameTEController = TextEditingController();
@@ -58,6 +59,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       setState(() { });
     }
     if(response.isSuccess){
+      userData.firstName = _firstNameTEController.text.trim();
+      userData.lastName = _lastNameTEController.text.trim();
+      userData.mobile = _mobileTEController.text.trim();
+      AuthUtility.updateUserInfo(userData);
       _passwordTEController.clear();
       if(mounted){
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile update')));

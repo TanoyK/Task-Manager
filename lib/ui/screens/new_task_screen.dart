@@ -141,6 +141,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
               child: RefreshIndicator(
                 onRefresh: () async {
                   getNewTask();
+                  getCountSummary();
                 },
                 child: _getNewTaskInProgress ? const Center(
                   child: CircularProgressIndicator(),

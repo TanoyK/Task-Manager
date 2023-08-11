@@ -5,9 +5,15 @@ import 'package:task_manager_11/ui/screens/auth/reset_password_screen.dart';
 import 'package:task_manager_11/ui/widgets/screen_background.dart';
 
 
-class OtpVerificationScreen extends StatelessWidget {
-  const OtpVerificationScreen({super.key});
+class OtpVerificationScreen extends StatefulWidget {
+  final String email;
+  const OtpVerificationScreen({super.key, required this.email});
 
+  @override
+  State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
+}
+
+class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
