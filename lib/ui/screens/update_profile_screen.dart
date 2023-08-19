@@ -85,7 +85,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(4),
                   child: Column(
                     children: [
                       const UserProfileAppBar(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:task_manager_11/data/models/auth_utility.dart';
 import 'package:task_manager_11/data/models/login_model.dart';
 import 'package:task_manager_11/data/models/network_response.dart';
@@ -51,10 +50,10 @@ class _LoginScreenState extends State<LoginScreen> {
       LoginModel model = LoginModel.fromJson(response.body!);
         await AuthUtility.saveUserInfo(model);
         if(mounted) {
-          // Navigator.pushAndRemoveUntil(context,
-          //     MaterialPageRoute(builder: (context) =>
-          //     const BottomNavBaseScreen()), (route) => false);
-            Get.off(const BottomNavBaseScreen());
+          Navigator.pushAndRemoveUntil(context,
+              MaterialPageRoute(builder: (context) =>
+              const BottomNavBaseScreen()), (route) => false);
+
         }
         }else{
       if(mounted) {

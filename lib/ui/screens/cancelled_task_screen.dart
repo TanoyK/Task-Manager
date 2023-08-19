@@ -3,6 +3,7 @@ import 'package:task_manager_11/data/models/network_response.dart';
 import 'package:task_manager_11/data/models/task_list_model.dart';
 import 'package:task_manager_11/data/services/network_caller.dart';
 import 'package:task_manager_11/data/utils/urls.dart';
+import 'package:task_manager_11/ui/screens/update_task_status_sheet.dart';
 import 'package:task_manager_11/ui/widgets/task_list_tile.dart';
 import 'package:task_manager_11/ui/widgets/user_profile_banner.dart';
 
@@ -15,7 +16,8 @@ class CancelledTaskScreen extends StatefulWidget {
 
 class _CancelledTaskScreenState extends State<CancelledTaskScreen> {
 
-  bool _getCancelledTaskInProgress = false;
+  bool _getCancelledTaskInProgress = false,
+      _getNewTaskInProgress = true;
   TaskListModel _taskListModel = TaskListModel();
 
 
@@ -37,6 +39,50 @@ class _CancelledTaskScreenState extends State<CancelledTaskScreen> {
     _getCancelledTaskInProgress = false;
     if(mounted){
       setState(() { });
+    }
+  }
+
+  Future<void> getNewTask() async {
+    _getNewTaskInProgress = true;
+    if (mounted) {
+      setState(() {
+
+      });
+    }
+    final NetworkResponse response = await NetworkCaller().getRequest(
+        Urls.newTask);
+    if (response.isSuccess) {
+      _taskListModel = TaskListModel.fromJson(response.body!);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Summary data get failed")));
+      }
+    }
+    _getNewTaskInProgress = false;
+    if (mounted) {
+      setState(() {
+
+      });
+    }
+  }
+
+  Future<void> deleteTask(String taskId) async {
+    final NetworkResponse response = await NetworkCaller().getRequest(
+        Urls.deleteTask(taskId));
+    if (response.isSuccess) {
+      _taskListModel.data!.removeWhere((element) => element.sId == taskId);
+      if (mounted) {
+        setState(() {
+
+        });
+      }
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Deletion of task has been failed')));
+      }
     }
   }
 
@@ -67,8 +113,12 @@ class _CancelledTaskScreenState extends State<CancelledTaskScreen> {
                 itemBuilder: (context, index) {
                   return TaskListTile(
                     data: _taskListModel.data![index],
-                    onDeleteTap: () {  },
-                    onEditTap: () {  },
+                    onDeleteTap: () {
+                      deleteTask(_taskListModel.data![index].sId!);
+                    },
+                    onEditTap: () {
+                      showStatusUpdateBottomSheet(_taskListModel.data![index]);
+                    },
                   );
                   // return const TaskListTile();
                 },
@@ -80,6 +130,20 @@ class _CancelledTaskScreenState extends State<CancelledTaskScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void showStatusUpdateBottomSheet(TaskData task) {
+    List<String> taskStatusList = ['new', 'progress', 'cancel', 'completed'];
+    String _selectedTask = task.status!.toLowerCase();
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return UpdateTaskStatusSheet(task: task, onUpdate: (){
+          getNewTask();
+        });
+      },
     );
   }
 }
