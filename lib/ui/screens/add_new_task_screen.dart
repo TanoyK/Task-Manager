@@ -83,6 +83,12 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                     decoration: const InputDecoration(
                       hintText: 'Title'
                     ),
+                     validator: (String? value ){
+                       if(value?.isEmpty ?? true){
+                         return 'Enter your title';
+                       }
+                       return null;
+                     },
                   ),
                   const SizedBox(height: 8,),
                   TextFormField(
@@ -91,6 +97,12 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                     decoration: const InputDecoration(
                         hintText: 'Description'
                     ),
+                    validator: (String? value ){
+                      if(value?.isEmpty ?? true){
+                        return 'Enter your description';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 16,),
                   SizedBox(

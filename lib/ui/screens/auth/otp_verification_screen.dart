@@ -35,7 +35,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       setState(() { });
     }
 
-    if(response.isSuccess) {
+    if(response.body!['status'] == 'success') {
       if (mounted) {
         Navigator.push(context, MaterialPageRoute(
             builder: (context) =>
